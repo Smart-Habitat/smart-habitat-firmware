@@ -1,8 +1,8 @@
-#### COPYRIGHT AMAS TECHNOLOGIES ####,,,,,
+#### COPYRIGHT SMART HABITAT ####,,,,,
 ## LICENSED UNDER AGPL-3.0 ##,,,,,
-#### COPYRIGHT AMAS TECHNOLOGIES ####,,,,,
+#### COPYRIGHT SMART HABITAT ####,,,,,
 ##########################################,,,,,
-# Partition table for AMAS firmware using 8MB flash,,,,,
+# Partition table for Smart Habitat firmware using 8MB flash,,,,,
 # Name,   Type, SubType, Offset,   Size,     Flags
 nvs,      data, nvs,     0x9000,   0x4000,
 otadata,  data, ota,     0xd000,   0x2000,

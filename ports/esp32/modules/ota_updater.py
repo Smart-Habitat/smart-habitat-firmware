@@ -1,6 +1,6 @@
-#### COPYRIGHT AMAS TECHNOLOGIES ####
+#### COPYRIGHT SMART HABITAT ####
 ## LICENSED UNDER AGPL-3.0 ##
-#### COPYRIGHT AMAS TECHNOLOGIES ####
+#### COPYRIGHT SMART HABITAT ####
 
 import os, gc, ubinascii, time, machine
 from esp32 import Partition

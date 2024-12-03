@@ -6,5 +6,5 @@ set(SDKCONFIG_DEFAULTS
     boards/sdkconfig.usb
     boards/sdkconfig.ble
     boards/sdkconfig.spiram_sx
-    boards/ESP32_GENERIC_S3/sdkconfig.board
+    boards/ESP32_S3_N8R2/sdkconfig.board
 )

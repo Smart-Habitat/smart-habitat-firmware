@@ -48,10 +48,7 @@ def setup():
         f.write(
             """\
 # This file is executed on every boot (including wake-boot from deepsleep)
-#import esp
-#esp.osdebug(None)
-#import webrepl
-#webrepl.start()
+print('Thank you for trying out Smart Habitat!')
 """
         )
     return fs

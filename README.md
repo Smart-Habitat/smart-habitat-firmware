@@ -1,26 +1,25 @@
-AMAS Firmware Based on MicroPython
-=======================
-This firmware is based on MicroPython, and as such, this repo is a fork of the main Micropython repo to preserve code acknowledgements. The main differences are in the build process; this repo contains several required libraries as frozen modules of ESP32, and contains only the sdkconfig files of the specific supported development boards. Any code related to the Smart Habitat firmware (not the base MicroPython firmware) is licensed under AGPL-v3.0, and is only used during the build process of the bin file (keeping the underlying MicroPython firmware under its own license).
+Smart Habitat Firmware Based on MicroPython
+===========================================
+This firmware is based on MicroPython, and as such, this repo is a fork of the main Micropython repo to preserve code acknowledgements. The main differences are in the build process; this repo contains several required libraries as frozen modules of ESP32, and contains only those sdkconfig files for the specific development boards that are supported. Any code related to the Smart Habitat firmware (not the base MicroPython firmware) is licensed under AGPL-v3.0, and is only used during the build process of the bin file (keeping the underlying MicroPython firmware under its own license).
 
 Flashing the firmware
 ---------------------
 
-You can download `.bin` file from `release` folder of the required platform and flash it to any ESP32 to start.
+Right now, only ESP32-S3 N8R2 is supported. Other boards can be supported depending on their ability to run the fairly large and complex firmware. Contributions are most welcome!
+
+You can download the `.bin` file specific to the development board you're using from the `release` folder, and flash it to the supported board to start. You'll need to flash it from the starting block of the on-board flash module, since Smart Habitat uses a custom partition table.
 - For Windows systems, use the [Espressif Flash Download Tool](https://www.espressif.com/en/support/download/other-tools)
 - For Linux/Mac use [Espressif esptool](https://github.com/espressif/esptool) -- [Documentation](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/esptool/flashing-firmware.html)
-- Download Thonny Python IDE (for Windows), or use any IDE capable of serial communication for Linux/Mac
-- Upload 2 files to the ESP32 control unit 
-  - `token` containing the token to be used for local API
-  - `platform` containing the board name (only `ESP32_GENERIC_S3 (N2R8)` is supported for now)
+- Download Thonny Python IDE, or use any IDE capable of serial communication
+- Upload 1 file (required) to the ESP32 data partition after flashing
+  - `api_key` a text file (without extension) containing the API key to be used with local API (string of 32 random alphanumeric characters)
 
 About this repository
 ---------------------
 
 This repository contains the following components:
-- [py/](py/) -- the core Python implementation, including compiler, runtime, and
-  core library.
-- [mpy-cross/](mpy-cross/) -- the MicroPython cross-compiler which is used to turn scripts
-  into precompiled bytecode.
+- [py/](py/) -- the core Python implementation, including compiler, runtime, and core library.
+- [mpy-cross/](mpy-cross/) -- the MicroPython cross-compiler which is used to turn scripts into precompiled bytecode.
 - [ports/](ports/) -- ESP32-specific code.
 - [lib/](lib/) -- submodules for external dependencies.
 - [tests/](tests/) -- test framework and test scripts.
@@ -28,9 +27,15 @@ This repository contains the following components:
 - [tools/](tools/) -- various tools, including the pyboard.py module.
 
 "make" is used to build the components, or "gmake" on BSD-based systems.
-You will also need bash, gcc, and Python 3.11/3.10 available as the command `python`, or `python3` 
+You will also need bash, gcc, and Python 3.12/3.11/3.10 available as the command `python`, or `python3` 
 (if your system only has Python 2.7 then invoke make with the additional option
 `PYTHON=python2`). Some ports (rp2 and esp32) additionally use CMake.
+
+If you want to build your own firmware from this repository, you'll need to recursively pull the submodules as well. You can do that by running:
+
+```bash
+$ git clone --recurse-submodules https://github.com/Smart-Habitat/smart-habitat-firmware.git
+```
 
 Setting up ESP-IDF and the build environment
 -----------------------------------
@@ -113,21 +118,21 @@ Then to build MicroPython for the ESP32 run:
 
 ```bash
 $ cd ports/esp32
-$ make BOARD=ESP32_GENERIC_S3 submodules
-$ make BOARD=ESP32_GENERIC_S3
+$ make BOARD=ESP32_S3_N8R2 submodules
+$ make BOARD=ESP32_S3_N8R2
 ```
 
-This will produce a combined `firmware.bin` image in the `build-ESP32_GENERIC_S3/`
+This will produce a combined `firmware.bin` image in the `build-ESP32_S3_N8R2/`
 subdirectory (this firmware image is made up of: bootloader.bin, partitions.bin
 and micropython.bin).
 
 To flash the firmware you must have your ESP32 module in the bootloader
 mode and connected to a serial port on your PC.  Refer to the documentation
 for your particular ESP32 module for how to do this.
-You will also need to have user permissions to access the `/dev/ttyUSB0` device.
+You will also need to have user permissions to access the `/dev/ttyACM0` device.
 On Linux, you can enable this by adding your user to the `dialout` group, and
 rebooting or logging out and in again. (Note: on some distributions this may
-be the `uucp` group, run `ls -la /dev/ttyUSB0` to check.)
+be the `uucp` group, run `ls -la /dev/ttyACM0` to check.)
 
 ```bash
 $ sudo adduser <username> dialout
@@ -138,11 +143,11 @@ after installing any other firmware, you should first erase the flash
 completely:
 
 ```bash
-$ make BOARD=ESP32_GENERIC_S3 PORT=/dev/ttyACM0 erase
+$ make BOARD=ESP32_S3_N8R2 PORT=/dev/ttyACM0 erase
 ```
 
 To flash the MicroPython firmware to your ESP32 use:
 
 ```bash
-$ make BOARD=ESP32_GENERIC_S3 PORT=/dev/ttyACM0 deploy
+$ make BOARD=ESP32_S3_N8R2 PORT=/dev/ttyACM0 deploy
 ```

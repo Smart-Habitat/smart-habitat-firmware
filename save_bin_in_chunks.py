@@ -1,3 +1,7 @@
+#### COPYRIGHT SMART HABITAT ####
+## LICENSED UNDER AGPL-3.0 ##
+#### COPYRIGHT SMART HABITAT ####
+
 import gc
 import binascii
 import os, shutil, sys

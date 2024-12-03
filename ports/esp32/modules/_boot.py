@@ -1,5 +1,4 @@
 import gc
-import esp32
 import uos
 from flashbdev import bdev
 
@@ -14,4 +13,4 @@ except OSError:
 gc.collect()
 
 
-import at_firmware_minified
+import sh_firmware_minified

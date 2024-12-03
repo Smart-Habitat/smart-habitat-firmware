@@ -19,6 +19,5 @@
     "vendor": "Espressif",
     "variants": {
         "SPIRAM_OCT": "Support for Octal-SPIRAM",
-        "FLASH_4M": "4MiB flash"
     }
 }

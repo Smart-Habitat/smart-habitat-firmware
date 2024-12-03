@@ -1,6 +1,6 @@
-#### COPYRIGHT AMAS TECHNOLOGIES ####
+#### COPYRIGHT SMART HABITAT ####
 ## LICENSED UNDER AGPL-3.0 ##
-#### COPYRIGHT AMAS TECHNOLOGIES ####
+#### COPYRIGHT SMART HABITAT ####
 
 import network, gc, os
 from httpclient import HttpClient
@@ -58,7 +58,7 @@ except:
 		gc.collect()
 	except:
 		sys.exit()
-# Platform (defaults to esp32-GENERIC)
+# Platform (defaults to ESP32_S3_N8R2)
 try:
 	with open('platform') as platform_file:
 		platform = platform_file.read().strip()
@@ -69,7 +69,13 @@ except:
 		nvs.get_blob(b'platform', platform)
 		platform = platform.decode().split('\x00')[0]
 	except:
-		platform = 'ESP32_GENERIC'
+		platform = 'ESP32_S3_N8R2'
+# Import platform specific Pins
+if 'ESP32_S3_N8R2' in platform:
+	from vars_ESP32_GENERIC_S3 import amb_scl, amb_sda, analog_water_sensor, water_power, hard_reset_button, network_reset_button, pump, light, err_light, dat_light, i2c_r
+else:
+	print('Unsupported board!!')
+	sys.exit()
 # Device ID
 try:
 	with open('device_id') as cust_dev_id_file:
@@ -120,11 +126,11 @@ def wifi_connect(ssid, password):
 		try:
 			global dhcp_hostname
 			if dhcp_hostname:
-				network.hostname('amas'+dhcp_hostname.lower())
+				network.hostname('smart-habitat-'+dhcp_hostname.lower())
 			else: raise Exception
 		except:
-			network.hostname('amas'+serial.lower())
-	else: network.hostname('amas'+serial.lower())
+			network.hostname('smart-habitat-'+serial.lower())
+	else: network.hostname('smart-habitat-'+serial.lower())
 	station = network.WLAN(network.STA_IF)
 	# Stop SoftAP is active
 	if network.WLAN(network.AP_IF).active():
@@ -152,7 +158,7 @@ def soft_ap():
 		network.WLAN(network.STA_IF).active(False)
 	ap.active(True)
 	# Start SoftAP with the api_key as the passphrase
-	ap.config(essid='amas' + serial.lower(), authmode=network.AUTH_WPA_WPA2_PSK, password=api_key)
+	ap.config(essid='smart-habitat-' + serial.lower(), authmode=network.AUTH_WPA_WPA2_PSK, password=api_key)
 
 # Read file in chunks
 def read_in_chunks(file_object, chunk_size=1024):
@@ -1099,8 +1105,6 @@ except:
 	salt = create_random_key()
 	with open('salt', 'w') as salt_file:
 		salt_file.write(salt)
-# Import platform specific Pins
-from vars_ESP32_GENERIC_S3 import amb_scl, amb_sda, analog_water_sensor, water_power, hard_reset_button, network_reset_button, pump, light, err_light, dat_light, i2c_r
 # Try RTC
 try:
 	ds3231 = DS3231(i2c_r)
@@ -1109,7 +1113,7 @@ except: pass
 # Running Partition
 RUNNING_PARTITION = esp32.Partition(esp32.Partition.RUNNING)
 # OTA
-ota = OTAUpdater(url='https://ota.amastechnologies.com/', watchdog=wdt, light_activities={'good_light':dat_light_act,'error_light':err_light_act}, platform=platform)
+ota = OTAUpdater(url='https://raw.githubusercontent.com/Smart-Habitat/smart-habitat-firmware/refs/heads/master/ota/', watchdog=wdt, light_activities={'good_light':dat_light_act,'error_light':err_light_act}, platform=platform)
 if debug or custom_device: print('Loaded global variables!')
 
 # Feed watchdog
