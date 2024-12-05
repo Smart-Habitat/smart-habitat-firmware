@@ -25,7 +25,14 @@ from binascii import a2b_base64
 
 
 ### Firmware Version ###
-FIRMWARE_VERSION = 'v0.22.3'
+FIRMWARE_VERSION = 'v0.0.3'
+
+
+### Initialize NVS ###
+# (Always try override files before NVS partition)
+nvs = esp32.NVS('nvs')
+custom_device = False
+custom_device_setup = False
 
 
 ### Check debug mode ###
@@ -39,26 +46,8 @@ else:
 	except: debug = False
 
 
-### Device ID and API Key ###
-
-# NVS partition initialization
-nvs = esp32.NVS('nvs')
-custom_device = False
-custom_device_setup = False
-# Always try files first before NVS partition
-# Encrpytion key and MAC encryption key (necessary for function)
-try:
-	with open('api_key', 'r') as cust_api_key_file:
-		api_key = cust_api_key_file.readline().strip()
-except:
-	try:
-		api_key = bytearray(32)
-		nvs.get_blob(b'api_key',api_key)
-		api_key = api_key.decode()
-		gc.collect()
-	except:
-		sys.exit()
-# Platform (defaults to ESP32_S3_N8R2)
+### Platform ###
+# Defaults to ESP32_S3_N8R2
 try:
 	with open('platform') as platform_file:
 		platform = platform_file.read().strip()
@@ -70,51 +59,20 @@ except:
 		platform = platform.decode().split('\x00')[0]
 	except:
 		platform = 'ESP32_S3_N8R2'
+		custom_device = True
 # Import platform specific Pins
 if 'ESP32_S3_N8R2' in platform:
 	from vars_ESP32_GENERIC_S3 import amb_scl, amb_sda, analog_water_sensor, water_power, hard_reset_button, network_reset_button, pump, light, err_light, dat_light, i2c_r
 else:
 	print('Unsupported board!!')
 	sys.exit()
-# Device ID
-try:
-	with open('device_id') as cust_dev_id_file:
-		device_id = cust_dev_id_file.read()
-	custom_device = True
-except:
-	try:
-		device_id = bytearray(64)
-		nvs.get_blob(b'device_id', device_id)
-		device_id = device_id.decode().split('\x00')[0]
-	except:
-		device_id = 'nodeviceidset_'+str(time())
-		custom_device_setup = True
-# Serial and DHCP hostname (for custom devices, device serial is the same as username)
-try:
-	with open('username') as cust_username_file:
-		lines=len(cust_username_file.readlines())
-	with open('username') as cust_username_file:
-		if lines == 1:
-			serial = dhcp_hostname = cust_username_file.read().strip()
-		elif lines == 2:
-			serial = cust_username_file.readline().strip()
-			dhcp_hostname = cust_username_file.readline().strip()
-		else: raise Exception
-	custom_device = True
-except:
-	try:
-		serial = bytearray(25)
-		nvs.get_blob(b'serial', serial)
-		serial = serial.decode().split('\x00')[0]
-		dhcp_hostname = False
-	except:
-		serial = 'noserialset_'+str(time())
-		custom_device_setup = True
 
-if debug or custom_device: print('Loaded device identifiers!')
 
 # Start Watchdog Timer
 wdt = WDT(timeout=60000)
+
+
+print('Thank you for choosing Smart Habitat!')
 
 
 ### SYNC FUNCTIONS ###
@@ -1066,6 +1024,67 @@ async def mark_running_partition_as_valid():
 	RUNNING_PARTITION.mark_app_valid_cancel_rollback()
 	if debug or custom_device: print('Since no errors were found, marked boot partition as valid!')
 			
+
+### Device Identifiers and API Key ###
+
+# API Key
+try:
+	with open('api_key', 'r') as cust_api_key_file:
+		api_key = cust_api_key_file.readline().strip()
+		print('Found existing API key:')
+		print(api_key)
+except:
+	try:
+		api_key = bytearray(32)
+		nvs.get_blob(b'api_key',api_key)
+		api_key = api_key.decode()
+		gc.collect()
+	except:
+		print('No API keys found, creating new API key...')
+		cust_api_key = create_random_key(32)
+		with open('api_key', 'w') as cust_api_key_file:
+			cust_api_key_file.write(cust_api_key)
+		api_key = cust_api_key
+		print('NEW API KEY IS:')
+		print(api_key)
+		print('PLEASE SAVE THIS API KEY, YOU\'LL NEED IT TO COMMUNICATE WITH YOUR DEVICE!!')
+# Device ID
+try:
+	with open('device_id') as cust_dev_id_file:
+		device_id = cust_dev_id_file.read()
+	custom_device = True
+except:
+	try:
+		device_id = bytearray(64)
+		nvs.get_blob(b'device_id', device_id)
+		device_id = device_id.decode().split('\x00')[0]
+	except:
+		device_id = 'nodeviceidset_'+str(time())+'_'+create_random_key(5)
+		custom_device_setup = True
+# Serial and DHCP hostname (for custom devices, device serial is the same as username)
+try:
+	with open('username') as cust_username_file:
+		lines=len(cust_username_file.readlines())
+	with open('username') as cust_username_file:
+		if lines == 1:
+			serial = dhcp_hostname = cust_username_file.read().strip()
+		elif lines == 2:
+			serial = cust_username_file.readline().strip()
+			dhcp_hostname = cust_username_file.readline().strip()
+		else: raise Exception
+	custom_device = True
+except:
+	try:
+		serial = bytearray(25)
+		nvs.get_blob(b'serial', serial)
+		serial = serial.decode().split('\x00')[0]
+		dhcp_hostname = False
+	except:
+		serial = 'noserialset_'+str(time())+'_'+create_random_key(5)
+		custom_device_setup = True
+
+if debug or custom_device: print('Loaded device identifiers!')
+
 
 ## Global Variables ##
 # Default pump states

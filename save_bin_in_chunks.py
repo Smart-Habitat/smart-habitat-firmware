@@ -24,6 +24,9 @@ def read_in_4kmult_chunks(file_object, folder, multiple=1):
 cwd = os.getcwd()
 folder = cwd+'/ota/'+PLATFORM
 
+if not os.path.exists(folder):
+	os.makedirs(folder)
+
 for filename in os.listdir(folder):
     file_path = os.path.join(folder, filename)
     try:

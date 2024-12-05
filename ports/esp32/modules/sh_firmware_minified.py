@@ -2,83 +2,89 @@
 ## LICENSED UNDER AGPL-3.0 ##
 #### COPYRIGHT SMART HABITAT ####
 
-By="Couldn't connect to the WiFi!"
-Bx='/shadow/name/'
-Bw='$aws/things/'
-Bv='Registered under: '
-Bu='old_ip'
-Bt='OPTIONS, GET'
-Bs='/update'
-Br='generate'
-Bq='DEVICE REBOOTING IN 10 SECONDS!'
-Bp='def_key.der'
-Bo='def_cert.der'
-Bn='Creating new salt'
-Bm='sensors'
-Bl='run_finder'
-Bk='alerts.json'
-Bj='dhcp_hostname'
-Bi='ESP32_S3_N8R2'
-Bh=RuntimeError
-BQ='text/plain'
-BP='Access-Control-Allow-Origin'
-BO='base64_DER_key'
-BN='base64_DER_cert'
-BM='ambient_limit'
-BL='cust_id'
-BK='serial'
-BJ='wifi'
-BI='name'
-BH='anonymous_data_collection'
-BG='\x00'
-Ax='Starting services'
-Aw=None
-Av='wb'
-Au='firmware_version'
-At='customer.json'
-As='no_telemetry'
-Ar='smart-habitat-'
-Aq='username'
-Ap='device_id'
-Ao='api_key'
-An=dict
-Am=bytearray
-AX='key.der'
-AW='cert.der'
-AV='POST'
-AU='OPTIONS, POST'
-AT='desired'
-AS='null_desire'
-AR='friendly_name'
-AQ='drain_check'
-AP='powered'
-AO='light_override'
-AN='off'
-AM='on'
-AH='close cmd'
-AG='note'
-AF='no_auto_update'
-AE='auto_update'
-A9='application/json'
-A8='override'
-A7=bool
-A6=len
-A0='Unauthorized'
-z='Allow'
-y=type
-v='admin'
-u='runtime'
-s=Exception
-o='Content-Type'
-n='interval'
-m='salt'
-l='debug'
-f='OPTIONS'
-a='x-api-key'
+CA="Couldn't connect to the WiFi!"
+C9='/shadow/name/'
+C8='$aws/things/'
+C7='Registered under: '
+C6='old_ip'
+C5='dev_id'
+C4='OPTIONS, GET'
+C3='/update'
+C2='generate'
+C1='DEVICE REBOOTING IN 10 SECONDS!'
+C0='def_key.der'
+B_='def_cert.der'
+Bz='Creating new salt'
+By='sensors'
+Bx='run_finder'
+Bw='alerts.json'
+Bv='dhcp_hostname'
+Bu='ESP32_S3_N8R2'
+Bt=RuntimeError
+Bb='text/plain'
+Ba='Access-Control-Allow-Origin'
+BZ='base64_DER_key'
+BY='base64_DER_cert'
+BX='ambient_limit'
+BW='cust_id_token'
+BV='del_cert'
+BU='wifi'
+BT='name'
+BS='anonymous_data_collection'
+BR='\x00'
+B6='Starting services'
+B5=None
+B4='wb'
+B3='firmware_version'
+B2='device_id'
+B1='username'
+B0='https://devicecert.amastech.cloud/'
+A_='no_telemetry'
+Az='smart-habitat-'
+Ay=dict
+Ax=bytearray
+Ai='key.der'
+Ah='cert.der'
+Ag='POST'
+Af='OPTIONS, POST'
+Ae='desired'
+Ad='null_desire'
+Ac='serial'
+Ab='api_key'
+Aa='friendly_name'
+AZ='drain_check'
+AY='powered'
+AX='light_override'
+AW='off'
+AV='on'
+AP='close cmd'
+AO='note'
+AN='stale_cert'
+AM='cert_id'
+AL='no_auto_update'
+AK='auto_update'
+AD='application/json'
+AC='customer.json'
+AB='override'
+AA=len
+A9=bool
+A2='Unauthorized'
+A1='Allow'
+A0=type
+x='admin'
+w='cust_id'
+v='runtime'
+t=Exception
+p='Content-Type'
+o='interval'
+n='salt'
+m='debug'
+i='OPTIONS'
+c='x-api-key'
 U='\n'
-T='r'
-S=range
-P='reported'
+T=range
+Q='reported'
+P='r'
 O='w'
 N='light'
 M=False
@@ -87,104 +93,83 @@ J='pump'
 I=str
 H=True
 F=print
-E=open
-C=int
-import network as Q,gc as L,os as b
-from httpclient import HttpClient
+D=int
+B=open
+import network as R,gc as L,os as W
+from httpclient import HttpClient as B7
 from machine import WDT
 from ubinascii import hexlify
-from time import sleep,localtime as Ay,time as p,gmtime
-from sht3x import SHT3x_Sensor as Bz
-from ota_updater import OTAUpdater as B_
-from ujson import loads as i,dumps as e
+from time import sleep,localtime as B8,time as q,gmtime
+from sht3x import SHT3x_Sensor as CB
+from ota_updater import OTAUpdater as CC
+from ujson import loads as d,dumps as e
 from ds3231_port import DS3231
-import machine as Az,sys,esp32 as A_,uasyncio as A
-from ntptime import settime as B0
-from microdot import Microdot as C0,Response as q
-from microdot.websocket import with_websocket as BR
+import machine as B9,sys,esp32 as BA,uasyncio as A
+from ntptime import settime as BB
+from microdot import Microdot as CD,Response as r
+from microdot.websocket import with_websocket as Bc
 from microdot.cors import CORS
-from mqtt_as import MQTTClient as BS,config as r
-import uhashlib as C1,random,string as BT
-from httpclient import HttpClient
+from mqtt_as import MQTTClient as Bd,config as s
+import uhashlib as CE,random,string as Be
+from httpclient import HttpClient as B7
 import ssl
-from binascii import a2b_base64 as AA
-X='v0.22.3'
-if X.split('.')[0]=='v0':D=H
+from binascii import a2b_base64 as AE
+Y='v0.0.3'
+Aj=BA.NVS('nvs')
+C=M
+Ak=M
+if Y.split('.')[0]=='v0':E=H
 else:
 	try:
-		with E(l):D=H
-	except:D=M
-AY=A_.NVS('nvs')
-B=M
-AZ=M
+		with B(m):E=H
+	except:E=M
 try:
-	with E(Ao,T)as C2:G=C2.readline().strip()
+	with B('platform')as CF:A3=CF.read().strip()
+	C=H
 except:
-	try:G=Am(32);AY.get_blob(b'api_key',G);G=G.decode();L.collect()
-	except:sys.exit()
-try:
-	with E('platform')as C3:A1=C3.read().strip()
-	B=H
-except:
-	try:A1=Am(25);AY.get_blob(b'platform',A1);A1=A1.decode().split(BG)[0]
-	except:A1=Bi
-if Bi in A1:from vars_ESP32_GENERIC_S3 import amb_scl as BU,amb_sda as BV,analog_water_sensor as BW,water_power as B1,hard_reset_button,network_reset_button,pump as j,light as Z,err_light as V,dat_light as B2,i2c_r
+	try:A3=Ax(25);Aj.get_blob(b'platform',A3);A3=A3.decode().split(BR)[0]
+	except:A3=Bu;C=H
+if Bu in A3:from vars_ESP32_GENERIC_S3 import amb_scl as Bf,amb_sda as Bg,analog_water_sensor as Bh,water_power as BC,hard_reset_button,network_reset_button,pump as k,light as a,err_light as V,dat_light as BD,i2c_r
 else:F('Unsupported board!!');sys.exit()
-try:
-	with E(Ap)as C4:k=C4.read()
-	B=H
-except:
-	try:k=Am(64);AY.get_blob(b'device_id',k);k=k.decode().split(BG)[0]
-	except:k='nodeviceidset_'+I(p());AZ=H
-try:
-	with E(Aq)as AI:w=A6(AI.readlines())
-	with E(Aq)as AI:
-		if w==1:d=t=AI.read().strip()
-		elif w==2:d=AI.readline().strip();t=AI.readline().strip()
-		else:raise s
-	B=H
-except:
-	try:d=Am(25);AY.get_blob(b'serial',d);d=d.decode().split(BG)[0];t=M
-	except:d='noserialset_'+I(p());AZ=H
-if D or B:F('Loaded device identifiers!')
 g=WDT(timeout=60000)
-def BX(ssid,password):
-	global d,B
-	if B:
+F('Thank you for choosing Smart Habitat!')
+def Bi(ssid,password):
+	global b,C
+	if C:
 		try:
-			global t
-			if t:Q.hostname(Ar+t.lower())
-			else:raise s
-		except:Q.hostname(Ar+d.lower())
-	else:Q.hostname(Ar+d.lower())
-	A=Q.WLAN(Q.STA_IF)
-	if Q.WLAN(Q.AP_IF).active():Q.WLAN(Q.AP_IF).active(M)
+			global u
+			if u:R.hostname(Az+u.lower())
+			else:raise t
+		except:R.hostname(Az+b.lower())
+	else:R.hostname(Az+b.lower())
+	A=R.WLAN(R.STA_IF)
+	if R.WLAN(R.AP_IF).active():R.WLAN(R.AP_IF).active(M)
 	A.active(H)
-	if D or B:F('Connecting to: '+ssid)
+	if E or C:F('Connecting to: '+ssid)
 	A.connect(ssid,password)
-	for C in S(15):
+	for B in T(15):
 		sleep(1)
 		if A.isconnected():break
-		elif C==14:A.active(M);raise OSError
-def B3():
-	global G,d;A=Q.WLAN(Q.AP_IF)
-	if Q.WLAN(Q.STA_IF).active():Q.WLAN(Q.STA_IF).active(M)
-	A.active(H);A.config(essid=Ar+d.lower(),authmode=Q.AUTH_WPA_WPA2_PSK,password=G)
-def CP(file_object,chunk_size=1024):
+		elif B==14:A.active(M);raise OSError
+def BE():
+	global G,b;A=R.WLAN(R.AP_IF)
+	if R.WLAN(R.STA_IF).active():R.WLAN(R.STA_IF).active(M)
+	A.active(H);A.config(essid=Az+b.lower(),authmode=R.AUTH_WPA_WPA2_PSK,password=G)
+def Cb(file_object,chunk_size=1024):
 	while H:
 		A=file_object.read(chunk_size)
 		if not A:break
 		yield A
-def B4(n=16):
+def AF(n=16):
 	A=''
-	for B in S(0,n):A=A+random.choice(BT.ascii_lowercase+BT.digits)
+	for B in T(0,n):A=A+random.choice(Be.ascii_lowercase+Be.digits)
 	return A
-def C5(old,new):
+def CG(old,new):
 	F=old;C=new;D={}
 	for A in C:
-		if y(C[A])is An:
+		if A0(C[A])is Ay:
 			for B in C[A]:
-				if y(C[A][B])is An:
+				if A0(C[A][B])is Ay:
 					for E in C[A][B]:
 						if C[A][B][E]!=F[A][B][E]:
 							try:D[A][B][E]=C[A][B][E]
@@ -196,755 +181,816 @@ def C5(old,new):
 					except:D[A]={};D[A][B]=C[A][B]
 		elif C[A]!=F[A]:D[A]=C[A]
 	return D
-def BY():
-	if gmtime(0)[0]==2000:A=p()+946684800
-	else:A=p()
+def Bj():
+	if gmtime(0)[0]==2000:A=q()+946684800
+	else:A=q()
 	return A
-async def BZ():
-	global BU,BV
-	try:D=Bz(freq=100000,sclpin=BU,sdapin=BV)
+async def Bk():
+	global Bf,Bg
+	try:C=CB(freq=100000,sclpin=Bf,sdapin=Bg)
 	except:return-9999,-9999
-	try:B=D.read_temp_humd()
+	try:B=C.read_temp_humd()
 	except:
 		A.sleep(1)
-		try:B=D.read_temp_humd()
+		try:B=C.read_temp_humd()
 		except:
 			A.sleep(1)
-			try:B=D.read_temp_humd()
+			try:B=C.read_temp_humd()
 			except:return-9999,-9999
-	if C(B[0])==-45 and C(B[1])==0:return-9999,-9999
+	if D(B[0])==-45 and D(B[1])==0:return-9999,-9999
 	return B[0],B[1]
-async def Ba():
-	global B1,BW;B1.value(1);A.sleep(.1);B=BW.read();B=B/4500*100;B1.value(0)
+async def Bl():
+	global BC,Bh;BC.value(1);A.sleep(.1);B=Bh.read();B=B/4500*100;BC.value(0)
 	if B<15:B=-9999
 	return B
-async def R():global B2;B2.value(1);A.sleep(.05);B2.value(0)
-async def Aa():global V;V.value(1);A.sleep(.1);V.value(0)
-async def AB(unit_state={},query_state={}):
-	a=query_state;G=unit_state;global j,Z;c=M
-	with E(N,T)as d:P=d.readline().strip();Q=d.readline().strip()
+async def S():global BD;BD.value(1);A.sleep(.05);BD.value(0)
+async def Al():global V;V.value(1);A.sleep(.1);V.value(0)
+async def AG(unit_state={},query_state={}):
+	b=query_state;G=unit_state;global k,a;c=M
+	with B(N,P)as f:Q=f.readline().strip();R=f.readline().strip()
 	L.collect()
-	with E(J,T)as K:
-		try:V=A7(C(K.readline().strip()));W=C(K.readline().strip());X=C(K.readline().strip())
-		except:V=A7(K.readline());W=C(K.readline().strip());X=C(K.readline().strip())
+	with B(J,P)as K:
+		try:V=A9(D(K.readline().strip()));X=D(K.readline().strip());Y=D(K.readline().strip())
+		except:V=A9(K.readline());X=D(K.readline().strip());Y=D(K.readline().strip())
 	L.collect()
 	if G:
-		if D or B:F(G)
+		if E or C:F(G)
 		if N in G:
 			try:
-				if C(G[N][AM])in S(0,2400):
-					if C(G[N][AM][:2])in S(0,24)and C(G[N][AM][2:])in S(0,60):P=G[N][AM]
+				if D(G[N][AV])in T(0,2400):
+					if D(G[N][AV][:2])in T(0,24)and D(G[N][AV][2:])in T(0,60):Q=G[N][AV]
 			except:pass
 			try:
-				if C(G[N][AN])in S(0,2400):
-					if C(G[N][AN][:2])in S(0,24)and C(G[N][AN][2:])in S(0,60):Q=G[N][AN]
+				if D(G[N][AW])in T(0,2400):
+					if D(G[N][AW][:2])in T(0,24)and D(G[N][AW][2:])in T(0,60):R=G[N][AW]
 			except:pass
-			with E(N,O)as d:d.write(P+U+Q+U)
+			with B(N,O)as f:f.write(Q+U+R+U)
 			try:
-				if G[N][A8]=='1'or G[N][A8]=='0'or G[N][A8]==M:
-					if G[N][A8]!=M:
-						Z.value(C(G[N][A8]))
-						with E(AO,O)as g:g.write(G[N][A8])
+				if G[N][AB]=='1'or G[N][AB]=='0'or G[N][AB]==M:
+					if G[N][AB]!=M:
+						a.value(D(G[N][AB]))
+						with B(AX,O)as n:n.write(G[N][AB])
 					else:
-						try:b.remove(AO)
+						try:W.remove(AX)
 						except:pass
 			except:
-				try:Y=x.get_time(set_rtc=M)
-				except:Y=Ay()
-				e=I(Y[3])+(I(Y[4])if A6(I(Y[4]))==2 else'0'+I(Y[4]))
-				if Q==P:Z.value(0)
-				elif C(P)<C(Q):
-					if C(e)in S(C(P),C(Q)):Z.value(1)
-					else:Z.value(0)
-				elif C(P)>C(Q):
-					if C(e)in S(C(P),2400)or C(e)in S(0,C(Q)):Z.value(1)
-					else:Z.value(0)
-				del e,Y;L.collect()
+				try:Z=y.get_time(set_rtc=M)
+				except:Z=B8()
+				g=I(Z[3])+(I(Z[4])if AA(I(Z[4]))==2 else'0'+I(Z[4]))
+				if R==Q:a.value(0)
+				elif D(Q)<D(R):
+					if D(g)in T(D(Q),D(R)):a.value(1)
+					else:a.value(0)
+				elif D(Q)>D(R):
+					if D(g)in T(D(Q),2400)or D(g)in T(0,D(R)):a.value(1)
+					else:a.value(0)
+				del g,Z;L.collect()
 		if J in G:
 			try:
-				if G[J][AP]==M or G[J][AP]==H:
-					with E(J,O)as K:K.write(I(C(G[J][AP]))+U+I(W)+U+I(X)+U)
-					V=G[J][AP]
-				if not V:j.value(0)
+				if G[J][AY]==M or G[J][AY]==H:
+					with B(J,O)as K:K.write(I(D(G[J][AY]))+U+I(X)+U+I(Y)+U)
+					V=G[J][AY]
+				if not V:k.value(0)
 				L.collect()
 			except:pass
 			try:
-				if y(G[J][n])is C and G[J][n]in S(600,86401):
-					with E(J,O)as K:K.write(I(C(V))+U+I(G[J][n])+U+I(X)+U)
-					W=G[J][n]
-				if y(G[J][n])is not C and C(G[J][n])in S(600,86401):K.write(I(C(V))+U+I(C(G[J][n]))+U+I(X)+U);W=C(G[J][n])
+				if A0(G[J][o])is D and G[J][o]in T(600,86401):
+					with B(J,O)as K:K.write(I(D(V))+U+I(G[J][o])+U+I(Y)+U)
+					X=G[J][o]
+				if A0(G[J][o])is not D and D(G[J][o])in T(600,86401):K.write(I(D(V))+U+I(D(G[J][o]))+U+I(Y)+U);X=D(G[J][o])
 				L.collect()
 			except:pass
 			try:
-				if y(G[J][u])is C and G[J][u]in S(60,86401):
-					with E(J,O)as K:K.write(I(C(V))+U+I(W)+U+I(G[J][u])+U)
-					X=G[J][u]
-				if y(G[J][u])is not C and C(G[J][u])in S(60,86401):K.write(I(C(V))+U+I(W)+U+I(C(G[J][u])+U));X=C(G[J][u])
+				if A0(G[J][v])is D and G[J][v]in T(60,86401):
+					with B(J,O)as K:K.write(I(D(V))+U+I(X)+U+I(G[J][v])+U)
+					Y=G[J][v]
+				if A0(G[J][v])is not D and D(G[J][v])in T(60,86401):K.write(I(D(V))+U+I(X)+U+I(D(G[J][v])+U));Y=D(G[J][v])
 				L.collect()
 			except:pass
 			try:
 				if G[J]['drain']:
-					with E(AQ,O)as h:h.write('1')
-					j.value(1)
+					with B(AZ,O)as p:p.write('1')
+					k.value(1)
 				else:
-					try:b.remove(AQ)
+					try:W.remove(AZ)
 					except:pass
-					j.value(0)
+					k.value(0)
 			except:pass
-		if AE in G:
-			i=G[AE]
-			if i:
-				try:b.remove(AF)
+		if AK in G:
+			q=G[AK]
+			if q:
+				try:W.remove(AL)
 				except:pass
 			else:
-				with E(AF)as k:k.write('1')
-		if BH in G:
-			l=G[BH]
-			if l:
-				try:b.remove(As)
+				with B(AL)as r:r.write('1')
+		if BS in G:
+			s=G[BS]
+			if s:
+				try:W.remove(A_)
 				except:pass
 			else:
-				with E(As)as m:m.write('1')
-		if AR in G:
-			with E(BI,O)as o:o.write(I(G[AR]))
-	if a:
-		if D or B:F(a)
+				with B(A_)as t:t.write('1')
+		if Aa in G:
+			with B(BT,O)as u:u.write(I(G[Aa]))
+	if b:
+		if E or C:F(b)
 		try:
-			if a['restart']:
-				for f in S(3):await R()
-				A.create_task(A4());c=H
+			if b['restart']:
+				for h in T(3):await S()
+				A.create_task(A6());c=H
 		except:pass
 		try:
-			if a['network-reset']:
-				for f in S(3):await R()
-				try:b.remove(BJ)
+			if b['network-reset']:
+				for h in T(3):await S()
+				try:W.remove(BU)
 				except:pass
-				A.create_task(A4());c=H
+				A.create_task(A6());c=H
 		except:pass
 		try:
-			if a['factory-reset']:
-				for f in b.listdir('/'):
-					try:b.remove(f)
+			if b['factory-reset']:
+				try:
+					with B(AC,P)as x:l=d(x.read())
+					i=l[AM];j=l[w]
+				except:pass
+				for h in T(3):await S()
+				for h in W.listdir('/'):
+					try:W.remove(h)
 					except:pass
-				for f in S(3):await R()
-				A.create_task(A4());c=H
+				m=B7()
+				try:
+					try:z=m.post(B0,json={BV:{w:j,AM:i}})
+					except:await A.sleep(1);L.collect();z=m.post(B0,json={BV:{w:j,AM:i}})
+				except:
+					with B(AN,O)as A1:A1.write(e({w:j,AM:i}))
+				A.create_task(A6());c=H
 		except:pass
 	if c:return H
 	return M
-async def C6(setup_dic):
-	B=setup_dic;global A2,A3,AZ;C=M
-	if AR in B:
-		with E(BI,O)as F:F.write(I(B[AR]))
-	if A2:
+async def CH(setup_dic):
+	C=setup_dic;global A4,A5,Ak;D=M
+	if Aa in C:
+		with B(BT,O)as F:F.write(I(C[Aa]))
+	if A4:
 		try:
-			with E(BJ,O)as G:G.write(I(B['ssid'])+U+I(B['password']))
-			C=H;await R()
+			with B(BU,O)as G:G.write(I(C['ssid'])+U+I(C['password']))
+			D=H;await S()
 		except:pass
-	if A3:
+	if A5:
 		try:
-			with E('cust_id_token',O)as J:J.write(B['id_token'])
-			C=H;await R()
+			with B(BW,O)as J:J.write(C['id_token'])
+			D=H;await S()
 		except:pass
-	if AZ:
+	if Ak:
 		try:
-			with E(Aq,O)as K:D=B[Aq];L=D+I(p());K.write(D+U+L)
-			C=H;await R()
+			with B(B1,O)as K:E=C[B1];L=E+I(q());K.write(E+U+L)
+			D=H;await S()
 		except:pass
 		try:
-			with E(Ap,T)as N:N.write(B[Ap])
-			C=H;await R()
+			with B(B2,P)as N:N.write(C[B2])
+			D=H;await S()
 		except:pass
-	if C:A.create_task(A4());return H
+	if D:A.create_task(A6());return H
 	return M
-async def AJ():
-	e='status';global j,Z,k,d,B,G,A3;f={Ao:G};O=Q.WLAN(Q.STA_IF)
-	if O.active():D=O.ifconfig()[0]
-	else:D='192.168.4.1'
-	with E(J,T)as F:g=A7(C(F.readline().strip()));h=C(F.readline().strip());l=C(F.readline().strip())
-	m=A7(j.value())
-	with E(N,T)as P:R=P.readline().strip();S=P.readline().strip()
-	o=A7(Z.value())
-	try:p=E(AQ,T);U=H;p.close()
+async def AQ():
+	f='status';global k,a,h,b,C,G,A5;g={Ab:G};O=R.WLAN(R.STA_IF)
+	if O.active():E=O.ifconfig()[0]
+	else:E='192.168.4.1'
+	with B(J,P)as F:i=A9(D(F.readline().strip()));j=D(F.readline().strip());l=D(F.readline().strip())
+	m=A9(k.value())
+	with B(N,P)as Q:S=Q.readline().strip();T=Q.readline().strip()
+	n=A9(a.value())
+	try:p=B(AZ,P);U=H;p.close()
 	except:U=M
 	try:
-		with E(AO,T)as q:V=q.read()
+		with B(AX,P)as q:V=q.read()
 	except:V=M
 	try:
-		with E(AF)as z:W=M
-	except:W=H
+		with B(AL)as A0:X=M
+	except:X=H
 	try:
-		with E(As)as A0:Y=M
-	except:Y=H
-	L.collect();A={Ap:k,BK:d,N:{e:o,AM:R,AN:S,A8:V},J:{AP:g,n:h,u:l,e:m,'drain':U},'internal_ip':D,AE:W,BH:Y};del D,R,S;L.collect();A.update(f)
+		with B(A_)as A1:Z=M
+	except:Z=H
+	L.collect();A={B2:h,Ac:b,N:{f:n,AV:S,AW:T,AB:V},J:{AY:i,o:j,v:l,f:m,'drain':U},'internal_ip':E,AK:X,BS:Z};del E,S,T;L.collect();A.update(g)
 	try:
-		with E(At)as r:I=i(r.read())
-		s=I[BL];K=I['cert_exp'];a=BY()
-		if a>float(K):b.remove(At);Az.reset()
-		elif a>=float(K)-2592000:A3=1;c=H
-		else:c=M
-		del I;L.collect();A.update({'customer_id':s,'device_certificate':{'expiration:':K,'renewal_period_active':c}})
+		with B(AC)as r:I=d(r.read())
+		s=I[w];K=I['cert_exp'];c=Bj()
+		if c>float(K):W.remove(AC);B9.reset()
+		elif c>=float(K)-2592000:A5=1;e=H
+		else:e=M
+		del I;L.collect();A.update({'customer_id':s,'device_certificate':{'expiration:':K,'renewal_period_active':e}})
 	except:pass
 	try:
-		with E(BI)as v:w=v.read()
-		A.update({AR:w})
+		with B(BT)as t:x=t.read()
+		A.update({Aa:x})
 	except:pass
-	if B:
-		try:global t;A.update({Bj:t})
+	if C:
+		try:global u;A.update({Bv:u})
 		except:pass
-	A.update({Au:X})
-	with E(Bk,T)as x:y=i(x.read())
-	A.update(y);return A
-async def Y(unit_state=Bl):
-	A=unit_state;C,D=await BZ();E=await Ba();B={Bm:{'environment':{'temperature':C,'humidity':D},'water_level':E}}
+	A.update({B3:Y})
+	with B(Bw,P)as y:z=d(y.read())
+	A.update(z);return A
+async def Z(unit_state=Bx):
+	A=unit_state;C,D=await Bk();E=await Bl();B={By:{'environment':{'temperature':C,'humidity':D},'water_level':E}}
 	if A:
-		if A==Bl:B.update(await AJ())
+		if A==Bx:B.update(await AQ())
 		else:B.update(A)
 	del C,D,E;L.collect();return B
-async def B5(payload):
-	A=payload;D={};F=BY()
+async def BF(payload):
+	A=payload;D={};F=Bj()
 	if A:
-		A=A[K][P]
+		A=A[K][Q]
 		for B in A:
-			if B in[N,J,Au]:
-				if y(A[B])is An:
+			if B in[N,J,B3]:
+				if A0(A[B])is Ay:
 					for C in A[B]:D[B+'_'+C]=A[B][C]
 				else:D[B]=A[B]
-			if B==Bm:
+			if B==By:
 				for C in A[B]:
-					if y(A[B][C])is An:
+					if A0(A[B][C])is Ay:
 						for E in A[B][C]:
 							if not A[B][C][E]==-9999:D[C+'_'+E]=A[B][C][E]
 					elif not A[B][C]==-9999:D[C]=A[B][C]
 	D.update({'iso':F});return D
-async def A4():
-	if D or B:F('Restarting device in 10 seconds!')
-	await A.sleep(10);Az.reset()
-async def Ab():0
-async def Ac():0
-async def Ad():
-	global j;await A.sleep(600)
+async def A6():
+	if E or C:F('Restarting device in 10 seconds!')
+	await A.sleep(10);B9.reset()
+async def Am():0
+async def An():0
+async def Ao():
+	global k;await A.sleep(600)
 	while H:
 		try:
-			with E(AQ,T)as I:j.value(1)
+			with B(AZ,P)as I:k.value(1)
 		except:
-			with E(J,T)as B:
-				try:D=A7(C(B.readline().strip()));F=C(B.readline().strip());G=C(B.readline().strip())
-				except:D=A7(B.readline().strip());F=C(B.readline().strip());G=C(B.readline().strip())
+			with B(J,P)as C:
+				try:E=A9(D(C.readline().strip()));F=D(C.readline().strip());G=D(C.readline().strip())
+				except:E=A9(C.readline().strip());F=D(C.readline().strip());G=D(C.readline().strip())
 			L.collect()
-			if D:j.value(1);await A.sleep(G);j.value(0)
-			else:j.value(0)
+			if E:k.value(1);await A.sleep(G);k.value(0)
+			else:k.value(0)
 		await A.sleep(F)
-async def Ae():
-	global Z
-	try:global x;B=x.get_time(set_rtc=M)
-	except:B=Ay()
+async def Ap():
+	global a
+	try:global y;C=y.get_time(set_rtc=M)
+	except:C=B8()
 	while H:
 		try:
-			with E(AO,T)as K:
-				O=C(K.readline().strip())
-				if O:Z.value(1)
-				else:Z.value(0)
+			with B(AX,P)as K:
+				O=D(K.readline().strip())
+				if O:a.value(1)
+				else:a.value(0)
 		except:
-			with E(N,T)as J:D=J.readline().strip();F=J.readline().strip()
-			L.collect();G=I(B[3])+(I(B[4])if A6(I(B[4]))==2 else'0'+I(B[4]))
-			if F==D:Z.value(0)
-			elif C(D)<C(F):
-				if C(G)in S(C(D),C(F)):Z.value(1)
-				else:Z.value(0)
-			elif C(D)>C(F):
-				if C(G)in S(C(D),2400)or C(G)in S(0,C(F)):Z.value(1)
-				else:Z.value(0)
+			with B(N,P)as J:E=J.readline().strip();F=J.readline().strip()
+			L.collect();G=I(C[3])+(I(C[4])if AA(I(C[4]))==2 else'0'+I(C[4]))
+			if F==E:a.value(0)
+			elif D(E)<D(F):
+				if D(G)in T(D(E),D(F)):a.value(1)
+				else:a.value(0)
+			elif D(E)>D(F):
+				if D(G)in T(D(E),2400)or D(G)in T(0,D(F)):a.value(1)
+				else:a.value(0)
 		await A.sleep(30)
-async def Af():
+async def Aq():
 	S='High';N='Low';K='Sensor Error'
 	while H:
-		if not j.value():
-			P=await Ba()
+		if not k.value():
+			P=await Bl()
 			if P==-9999:G=K
 			elif P<25:G=N
 			else:G=M
-			with E(BM)as B:T=C(B.readline().strip());U=C(B.readline().strip());V=C(B.readline().strip());W=C(B.readline().strip())
-			I,J=await BZ()
-			if I>T:D=S
-			elif I==-9999:D=K
-			elif I<U:D=N
-			else:D=M
+			with B(BX)as C:T=D(C.readline().strip());U=D(C.readline().strip());V=D(C.readline().strip());W=D(C.readline().strip())
+			I,J=await Bk()
+			if I>T:E=S
+			elif I==-9999:E=K
+			elif I<U:E=N
+			else:E=M
 			if J>V:F=S
 			elif J==-9999:F=K
 			elif J<W:F=N
 			else:F=M
-			Q={'alerts':{'water_level_alert':G,'temperature_alert':D,'humidity_alert':F}}
-			with E(Bk,O)as R:R.write(e(Q))
+			Q={'alerts':{'water_level_alert':G,'temperature_alert':E,'humidity_alert':F}}
+			with B(Bw,O)as R:R.write(e(Q))
 			del Q,R;L.collect()
 		g.feed();await A.sleep(10)
-async def C7():
+async def CI():
 	global V
 	while H:V.value(1);await A.sleep(.5);V.value(0);await A.sleep(1)
-async def C8():
+async def CJ():
 	global V
 	while H:V.value(1);await A.sleep(.1);V.value(0);await A.sleep(.05);V.value(1);await A.sleep(.1);V.value(0);await A.sleep(.05);V.value(1);await A.sleep(.1);V.value(0);await A.sleep(1)
-async def C9():
+async def CK():
 	global V
 	while H:V.value(1);await A.sleep(.1);V.value(0);await A.sleep(.05);V.value(1);await A.sleep(.25);V.value(0);await A.sleep(.05);V.value(1);await A.sleep(.1);V.value(0);await A.sleep(1)
-async def Bb():
+async def Bm():
 	while H:
-		try:B0()
+		try:BB()
 		except:
 			await A.sleep(120)
-			try:B0()
+			try:BB()
 			except:
 				await A.sleep(120)
-				try:B0()
+				try:BB()
 				except:pass
-		try:global x;x.save_time()
+		try:global y;y.save_time()
 		except:pass
 		await A.sleep(86400)
-async def Ag():
-	global A2,B6
+async def Ar():
+	global A4,BG
 	while H:
-		B=Q.WLAN(Q.STA_IF)
+		B=R.WLAN(R.STA_IF)
 		if not B.active():
 			try:
-				BX(BA,BB)
-				if B6:Az.reset()
-			except:A2=1;B3()
+				Bi(BL,BM)
+				if BG:B9.reset()
+			except:A4=1;BE()
 		del B;L.collect();await A.sleep(600)
-async def Bc():
-	try:global x
+async def Bn():
+	try:global y
 	except:pass
 	G=0
 	while H:
 		try:
-			with E(AF)as V:0
-			P=900
+			with B(AL)as V:0
+			Q=900
 		except:
-			try:L=x.get_time(set_rtc=M)
-			except:L=Ay()
-			Q=I(L[3])+(I(L[4])if A6(I(L[4]))==2 else'0'+I(L[4]))
-			with E(N,T)as R:J=R.readline().strip();K=R.readline().strip()
-			P=900
+			try:L=y.get_time(set_rtc=M)
+			except:L=B8()
+			R=I(L[3])+(I(L[4])if AA(I(L[4]))==2 else'0'+I(L[4]))
+			with B(N,P)as S:J=S.readline().strip();K=S.readline().strip()
+			Q=900
 			if K==J:
-				for U in S(0,48):
+				for U in T(0,48):
 					await A.sleep(900)
 					if not K==J:break
 					if U==47:
 						G=G+1
-						if G==6:await A4()
-						F=await c.update(X,debug=D or B)
+						if G==6:await A6()
+						F=await f.update(Y,debug=E or C)
 						if not F:
-							await A.sleep(15);F=await c.update(X,debug=D or B)
+							await A.sleep(15);F=await f.update(Y,debug=E or C)
 							if not F:
-								await A.sleep(15);F=await c.update(X,debug=D or B)
-								if not F:await A.sleep(15);F=await c.update(X,debug=D or B)
-			elif C(K)<C(J):
-				O=I(C((C(K)+C(J))/2))[:-2]
-				if C(O+'00')<C(Q)<C(O+'20'):
+								await A.sleep(15);F=await f.update(Y,debug=E or C)
+								if not F:await A.sleep(15);F=await f.update(Y,debug=E or C)
+			elif D(K)<D(J):
+				O=I(D((D(K)+D(J))/2))[:-2]
+				if D(O+'00')<D(R)<D(O+'20'):
 					G=G+1
-					if G==6:await A4()
-					F=await c.update(X,debug=D or B)
+					if G==6:await A6()
+					F=await f.update(Y,debug=E or C)
 					if not F:
-						await A.sleep(15);F=await c.update(X,debug=D or B)
+						await A.sleep(15);F=await f.update(Y,debug=E or C)
 						if not F:
-							await A.sleep(15);F=await c.update(X,debug=D or B)
-							if not F:await A.sleep(15);F=await c.update(X,debug=D or B)
-			elif C(K)>C(J):
-				O=I(C((C(K)-C(J))/2))[:-2]
-				if C(O+'00')<C(Q)<C(O+'20'):
+							await A.sleep(15);F=await f.update(Y,debug=E or C)
+							if not F:await A.sleep(15);F=await f.update(Y,debug=E or C)
+			elif D(K)>D(J):
+				O=I(D((D(K)-D(J))/2))[:-2]
+				if D(O+'00')<D(R)<D(O+'20'):
 					G=G+1
-					if G==6:await A4()
-					F=await c.update(X,debug=D or B)
+					if G==6:await A6()
+					F=await f.update(Y,debug=E or C)
 					if not F:
-						await A.sleep(15);F=await c.update(X,debug=D or B)
+						await A.sleep(15);F=await f.update(Y,debug=E or C)
 						if not F:
-							await A.sleep(15);F=await c.update(X,debug=D or B)
-							if not F:await A.sleep(15);F=await c.update(X,debug=D or B)
-		await A.sleep(P)
-async def CA():
+							await A.sleep(15);F=await f.update(Y,debug=E or C)
+							if not F:await A.sleep(15);F=await f.update(Y,debug=E or C)
+		await A.sleep(Q)
+async def CL():
 	await A.sleep(65)
-	if D or B:F('All services started successfully!')
-	CC.mark_app_valid_cancel_rollback()
-	if D or B:F('Since no errors were found, marked boot partition as valid!')
+	if E or C:F('All services started successfully!')
+	CO.mark_app_valid_cancel_rollback()
+	if E or C:F('Since no errors were found, marked boot partition as valid!')
 try:
-	with E(J,T)as AK:w=A6(AK.readlines())
-	if not w==3:raise s
+	with B(Ab,P)as BH:G=BH.readline().strip();F('Found existing API key:');F(G)
 except:
-	with E(J,O)as CB:CB.write('0\n600\n60\n')
+	try:G=Ax(32);Aj.get_blob(b'api_key',G);G=G.decode();L.collect()
+	except:
+		F('No API keys found, creating new API key...');Bo=AF(32)
+		with B(Ab,O)as BH:BH.write(Bo)
+		G=Bo;F('NEW API KEY IS:');F(G);F("PLEASE SAVE THIS API KEY, YOU'LL NEED IT TO COMMUNICATE WITH YOUR DEVICE!!")
 try:
-	with E(N,T)as AK:w=A6(AK.readlines())
-	if not w==2:raise s
+	with B(B2)as CM:h=CM.read()
+	C=H
 except:
-	with E(N,O)as B7:B7.write('0000\n0000\n')
+	try:h=Ax(64);Aj.get_blob(b'device_id',h);h=h.decode().split(BR)[0]
+	except:h='nodeviceidset_'+I(q())+'_'+AF(5);Ak=H
 try:
-	with E(BM,T)as AK:w=A6(AK.readlines())
-	if not w==4:raise s
+	with B(B1)as AR:z=AA(AR.readlines())
+	with B(B1)as AR:
+		if z==1:b=u=AR.read().strip()
+		elif z==2:b=AR.readline().strip();u=AR.readline().strip()
+		else:raise t
+	C=H
 except:
-	with E(BM,O)as B7:B7.write('40\n10\n90\n10\n')
+	try:b=Ax(25);Aj.get_blob(b'serial',b);b=b.decode().split(BR)[0];u=M
+	except:b='noserialset_'+I(q())+'_'+AF(5);Ak=H
+if E or C:F('Loaded device identifiers!')
 try:
-	with E(m)as AL:W=AL.read()
-	if D or B:F('Found existing salt')
+	with B(J,P)as AS:z=AA(AS.readlines())
+	if not z==3:raise t
 except:
-	if D or B:F(Bn)
-	W=B4()
-	with E(m,O)as AL:AL.write(W)
-try:x=DS3231(i2c_r);x.get_time(set_rtc=H)
+	with B(J,O)as CN:CN.write('0\n600\n60\n')
+try:
+	with B(N,P)as AS:z=AA(AS.readlines())
+	if not z==2:raise t
+except:
+	with B(N,O)as BI:BI.write('0000\n0000\n')
+try:
+	with B(BX,P)as AS:z=AA(AS.readlines())
+	if not z==4:raise t
+except:
+	with B(BX,O)as BI:BI.write('40\n10\n90\n10\n')
+try:
+	with B(n)as AT:X=AT.read()
+	if E or C:F('Found existing salt')
+except:
+	if E or C:F(Bz)
+	X=AF()
+	with B(n,O)as AT:AT.write(X)
+try:y=DS3231(i2c_r);y.get_time(set_rtc=H)
 except:pass
-CC=A_.Partition(A_.Partition.RUNNING)
-c=B_(url='https://raw.githubusercontent.com/Smart-Habitat/smart-habitat-firmware/refs/heads/master/ota/',watchdog=g,light_activities={'good_light':R,'error_light':Aa},platform=A1)
-if D or B:F('Loaded global variables!')
+CO=BA.Partition(BA.Partition.RUNNING)
+f=CC(url='https://raw.githubusercontent.com/Smart-Habitat/smart-habitat-firmware/refs/heads/master/ota/',watchdog=g,light_activities={'good_light':S,'error_light':Al},platform=A3)
+if E or C:F('Loaded global variables!')
 g.feed()
-try:b.remove(AQ)
+try:W.remove(AZ)
 except:pass
-try:b.remove(AO)
+try:W.remove(AX)
 except:pass
-try:b.remove(AS)
+try:W.remove(Ad)
 except:pass
-from default_api_cert import base64_cert_and_key as B8
-with E(Bo,Av)as CD:CD.write(AA(B8[BN]))
-with E(Bp,Av)as CE:CE.write(AA(B8[BO]))
-del B8
+from default_api_cert import base64_cert_and_key as BJ
+with B(B_,B4)as CP:CP.write(AE(BJ[BY]))
+with B(C0,B4)as CQ:CQ.write(AE(BJ[BZ]))
+del BJ
 L.collect()
-h=C0()
-CORS(h,allowed_origins='*',allow_credentials=H,max_age=20,expose_headers=[z,o,a,BP,'Access-Control-Allow-Methods','Access-Control-Allow-Headers','Access-Control-Request-Method','Access-Control-Expose-Headers','Access-Control-Allow-Credentials'])
-@h.route('/control',methods=[AV,f])
-async def CQ(request):
-	C=request;global W;global G;E=C.headers
-	if not E or a not in E or E[a]!=G:return A0,401
-	A=C.json
+j=CD()
+CORS(j,allowed_origins='*',allow_credentials=H,max_age=20,expose_headers=[A1,p,c,Ba,'Access-Control-Allow-Methods','Access-Control-Allow-Headers','Access-Control-Request-Method','Access-Control-Expose-Headers','Access-Control-Allow-Credentials'])
+@j.route('/control',methods=[Ag,i])
+async def Cc(request):
+	B=request;global X;global G;D=B.headers
+	if not D or c not in D or D[c]!=G:return A2,401
+	A=B.json
 	if A:
-		try:F=A[K][v]
+		try:F=A[K][x]
 		except:F={}
-		try:A=A[K][AT]
+		try:A=A[K][Ae]
 		except:A={}
 	else:F={}
-	J=await AB(unit_state=A,query_state=F)
-	if J:H={K:{AG:Bq,v:{m:W,l:D or B},P:await Y()}}
-	else:H={K:{v:{m:W,l:D or B},P:await Y()}}
-	I=q(body=H,status_code=200,headers={o:A9})
-	if C.method==f:I.headers[z]=AU
-	await R();return I
-@h.route('/setup',methods=[AV,f])
-async def CR(request):
-	A=request;global W;global G;C=A.headers
-	if not C or a not in C or C[a]!=G:return A0,401
-	E=M;F=A.json
-	if F:E=await C6(F)
-	if E:H={K:{AG:Bq,v:{m:W,l:D or B},P:await Y()}}
-	else:H={K:{v:{m:W,l:D or B},P:await Y()}}
-	I=q(body=H,status_code=200,headers={o:A9})
-	if A.method==f:I.headers[z]=AU
+	J=await AG(unit_state=A,query_state=F)
+	if J:H={K:{AO:C1,x:{n:X,m:E or C},Q:await Z()}}
+	else:H={K:{x:{n:X,m:E or C},Q:await Z()}}
+	I=r(body=H,status_code=200,headers={p:AD})
+	if B.method==i:I.headers[A1]=Af
+	await S();return I
+@j.route('/setup',methods=[Ag,i])
+async def Cd(request):
+	A=request;global X;global G;B=A.headers
+	if not B or c not in B or B[c]!=G:return A2,401
+	D=M;F=A.json
+	if F:D=await CH(F)
+	if D:H={K:{AO:C1,x:{n:X,m:E or C},Q:await Z()}}
+	else:H={K:{x:{n:X,m:E or C},Q:await Z()}}
+	I=r(body=H,status_code=200,headers={p:AD})
+	if A.method==i:I.headers[A1]=Af
 	return I
-@h.route('/salt',methods=[AV,f])
-async def CS(request):
-	A=request;global W;global G;C=A.headers
-	if not C or a not in C or C[a]!=G:return A0,401
+@j.route('/salt',methods=[Ag,i])
+async def Ce(request):
+	A=request;global X;global G;D=A.headers
+	if not D or c not in D or D[c]!=G:return A2,401
 	I=A.json
-	if I[Br]:
-		if D or B:F(Bn)
-		W=B4()
-		with E(m,O)as J:J.write(W)
-	else:raise Bh
-	L={K:{AG:'New salt generated!'}};H=q(body=L,status_code=200,headers={o:A9})
-	if A.method==f:H.headers[z]=AU
+	if I[C2]:
+		if E or C:F(Bz)
+		X=AF()
+		with B(n,O)as J:J.write(X)
+	else:raise Bt
+	L={K:{AO:'New salt generated!'}};H=r(body=L,status_code=200,headers={p:AD})
+	if A.method==i:H.headers[A1]=Af
 	return H
-@h.route('/api_key',methods=[AV,f])
-async def CT(request):
-	B=request;global G;C=B.headers
-	if not C or a not in C or C[a]!=G:return A0,401
-	H=B.json
-	if H[Br]:
-		D=B4(32)
-		with E(Ao,O)as I:I.write(D)
-		A={Ao:D};A={K:{'new':A}}
-	else:A={K:{AG:'New API key not generated!'}}
-	F=q(body=A,status_code=200,headers={o:A9})
-	try:G=D
+@j.route('/api_key',methods=[Ag,i])
+async def Cf(request):
+	C=request;global G;D=C.headers
+	if not D or c not in D or D[c]!=G:return A2,401
+	H=C.json
+	if H[C2]:
+		E=AF(32)
+		with B(Ab,O)as I:I.write(E)
+		A={Ab:E};A={K:{'new':A}}
+	else:A={K:{AO:'New API key not generated!'}}
+	F=r(body=A,status_code=200,headers={p:AD})
+	try:G=E
 	except:pass
-	if B.method==f:F.headers[z]=AU
+	if C.method==i:F.headers[A1]=Af
 	return F
-@h.route(Bs)
-@BR
-async def CU(request,ws):
-	Y='Rebooting';W='No update necessary';V='Update end UTC';U='ERROR!!';S='Update has not yet run after boot!';P='Retrying in 15 seconds!';N='update_log';C=ws;global G;K=i(await C.receive())
-	if not K or a not in K or K[a]!=G:await C.send(AH);return A0,401
+@j.route(C3)
+@Bc
+async def Cg(request,ws):
+	Z='Rebooting';X='No update necessary';V='Update end UTC';U='ERROR!!';T='Update has not yet run after boot!';Q='Retrying in 15 seconds!';N='update_log';D=ws;global G;K=d(await D.receive())
+	if not K or c not in K or K[c]!=G:await D.send(AP);return A2,401
 	try:
-		with E(N,T)as I:
-			await C.send('Previous run -----------')
+		with B(N,P)as I:
+			await D.send('Previous run -----------')
 			try:
-				for F in I:await C.send(F)
+				for F in I:await D.send(F)
 			except:pass
-			await C.send('End previous run -------')
-	except:await C.send(S)
-	L=i(await C.receive())
+			await D.send('End previous run -------')
+	except:await D.send(T)
+	L=d(await D.receive())
 	try:
 		if L['auto']:
-			try:b.remove(AF);await C.send('Automatic update enabled!')
-			except:await C.send('Automatic update was already enabled!')
+			try:W.remove(AL);await D.send('Automatic update enabled!')
+			except:await D.send('Automatic update was already enabled!')
 		else:
-			with E(AF,O)as I:I.write('1')
-			await C.send('Automatic update disabled!')
+			with B(AL,O)as I:I.write('1')
+			await D.send('Automatic update disabled!')
 	except:pass
 	try:
 		if L['tail']:
 			try:
-				with E(N)as I:
-					for F in I:await C.send(F)
-					if U in F or V in F or W in F or Y in F:await C.send(AH);return M
-			except:await C.send(S);await C.send(AH);return M
-			Q='';R=0
+				with B(N)as I:
+					for F in I:await D.send(F)
+					if U in F or V in F or X in F or Z in F:await D.send(AP);return M
+			except:await D.send(T);await D.send(AP);return M
+			R='';S=0
 			while H:
 				try:
-					with E(N)as I:
+					with B(N)as I:
 						for F in I:0
-						if Q==F.encode():R+=1
-						Q=F.encode();await C.send(F)
-						if R>7 or U in F or V in F or W in F or Y in F:await C.send(AH);return M
+						if R==F.encode():S+=1
+						R=F.encode();await D.send(F)
+						if S>7 or U in F or V in F or X in F or Z in F:await D.send(AP);return M
 				except:break
 				await A.sleep(5)
 	except:pass
 	try:
 		if L['start']:
-			J=await c.update(X,C,debug=D or B)
+			J=await f.update(Y,D,debug=E or C)
 			if not J:
-				await C.send(P);await A.sleep(15);J=await c.update(X,C,debug=D or B)
+				await D.send(Q);await A.sleep(15);J=await f.update(Y,D,debug=E or C)
 				if not J:
-					await C.send(P);await A.sleep(15);J=await c.update(X,C,debug=D or B)
-					if not J:await C.send(P);await A.sleep(15);J=await c.update(X,C,debug=D or B)
-	except:await C.send(AH);return M
-@h.route('/debug',methods=[AV,f])
-async def CV(request):
-	A=request;global D;global G;B=A.headers
-	if not B or a not in B or B[a]!=G:return A0,401
+					await D.send(Q);await A.sleep(15);J=await f.update(Y,D,debug=E or C)
+					if not J:await D.send(Q);await A.sleep(15);J=await f.update(Y,D,debug=E or C)
+	except:await D.send(AP);return M
+@j.route('/debug',methods=[Ag,i])
+async def Ch(request):
+	A=request;global E;global G;C=A.headers
+	if not C or c not in C or C[c]!=G:return A2,401
 	I=A.json
-	if I[l]:
-		with E(l,O)as J:J.write('1')
-		C={K:{AG:'Debugging enabled, please connect the device to a computer to start!'}};F=q(body=C,status_code=200,headers={o:A9});D=H
+	if I[m]:
+		with B(m,O)as J:J.write('1')
+		D={K:{AO:'Debugging enabled, please connect the device to a computer to start!'}};F=r(body=D,status_code=200,headers={p:AD});E=H
 	else:
-		try:b.remove(l)
+		try:W.remove(m)
 		except:pass
-		C={K:{AG:'Debugging disabled!'}};F=q(body=C,status_code=200,headers={o:A9});D=M
-	if A.method==f:F.headers[z]=AU
+		D={K:{AO:'Debugging disabled!'}};F=r(body=D,status_code=200,headers={p:AD});E=M
+	if A.method==i:F.headers[A1]=Af
 	return F
-@h.route('/poll',methods=['GET',f])
-async def CW(request):
-	C=request;global W,D,B;global G;A=C.headers
-	if not A or a not in A or A[a]!=G:return A0,401
-	F={K:{v:{m:W,l:D or B},P:await Y()}};E=q(body=F,status_code=200,headers={o:A9});await R()
-	if C.method==f:E.headers[z]=Bt
-	return E
-@h.route('/metrics')
-@BR
-async def CX(request,ws):
-	O='Sent data through WebSocket';E=ws;global W,D,B;global G;I=i(await E.receive())
-	if not I or a not in I or I[a]!=G:await E.send(AH);return A0,401
-	J=0;C=e({K:{v:{m:W,l:D or B},P:await Y()}});await E.send(C);await R()
-	if D or B:F(O)
-	del C;L.collect();M=await AJ()
+@j.route('/poll',methods=['GET',i])
+async def Ci(request):
+	B=request;global X,E,C;global G;A=B.headers
+	if not A or c not in A or A[c]!=G:return A2,401
+	F={K:{x:{n:X,m:E or C},Q:await Z()}};D=r(body=F,status_code=200,headers={p:AD});await S()
+	if B.method==i:D.headers[A1]=C4
+	return D
+@j.route('/metrics')
+@Bc
+async def Cj(request,ws):
+	O='Sent data through WebSocket';D=ws;global X,E,C;global G;I=d(await D.receive())
+	if not I or c not in I or I[c]!=G:await D.send(AP);return A2,401
+	J=0;B=e({K:{x:{n:X,m:E or C},Q:await Z()}});await D.send(B);await S()
+	if E or C:F(O)
+	del B;L.collect();M=await AQ()
 	while H:
-		N=await AJ()
+		N=await AQ()
 		if M!=N:
-			C=e({K:{v:{m:W,l:D or B},P:await Y(N)}});M=N;L.collect();await E.send(C);await R()
-			if D or B:F(O)
+			B=e({K:{x:{n:X,m:E or C},Q:await Z(N)}});M=N;L.collect();await D.send(B);await S()
+			if E or C:F(O)
 			L.collect()
 		if J<30:J+=1
 		else:
-			J=0;L.collect();C=e({K:{v:{m:W,l:D or B},P:await Y(M)}});await E.send(C);await R()
-			if D or B:F(O)
+			J=0;L.collect();B=e({K:{x:{n:X,m:E or C},Q:await Z(M)}});await D.send(B);await S()
+			if E or C:F(O)
 		await A.sleep(2)
-@h.route('/local',methods=['GET',f])
-async def CY(request):
-	A=q(body='OK',status_code=200,headers={o:BQ});await R()
-	if request.method==f:A.headers[z]=Bt
+@j.route('/local',methods=['GET',i])
+async def Ck(request):
+	A=r(body='OK',status_code=200,headers={p:Bb});await S()
+	if request.method==i:A.headers[A1]=C4
 	return A
-@h.errorhandler(404)
-async def CZ(request):A=q(body='No such endpoint!',status_code=404,headers={o:BQ,BP:'*'});await Aa();return A
-@h.errorhandler(Bh)
-async def Ca(request,exception):
+@j.errorhandler(404)
+async def Cl(request):A=r(body='No such endpoint!',status_code=404,headers={p:Bb,Ba:'*'});await Al();return A
+@j.errorhandler(Bt)
+async def Cm(request,exception):
 	A=exception
-	if not(D or B):A='Runtime error! Restarting the device is advisable!'
-	C=q(body=A,status_code=500,headers={o:BQ,BP:'*'});await Aa();return C
-async def Ah():
-	global B;A.create_task(CA());C=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+	if not(E or C):A='Runtime error! Restarting the device is advisable!'
+	B=r(body=A,status_code=500,headers={p:Bb,Ba:'*'});await Al();return B
+async def As():
+	global C;A.create_task(CL());D=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 	try:
-		with E(AW,'rb'):0
-		with E(AX,'rb'):0
-		C.load_cert_chain(AW,AX)
-		if D or B:F('Using IP specific API certificate')
+		with B(Ah,'rb'):0
+		with B(Ai,'rb'):0
+		D.load_cert_chain(Ah,Ai)
+		if E or C:F('Using IP specific API certificate')
 	except:
-		C.load_cert_chain(Bo,Bp)
-		if D or B:F('Using default API certificate')
-	await h.start_server(port=443,debug=D or B,ssl=C)
-def CF(topic,msg,retained):
-	H=msg;A.create_task(R())
+		D.load_cert_chain(B_,C0)
+		if E or C:F('Using default API certificate')
+	await j.start_server(port=443,debug=E or C,ssl=D)
+def CR(topic,msg,retained):
+	H=msg;A.create_task(S())
 	try:
 		H=H.decode()
-		if D or B:F('MQTT message received: '+H)
-		C=i(H)
-		if K in C:
-			try:C=C[K][AT]
+		if E or C:F('MQTT message received: '+H)
+		D=d(H)
+		if K in D:
+			try:D=D[K][Ae]
 			except:
-				C=C[K]
-				if J not in C and N not in C and AE not in C:C={}
-		elif AT in C:C=C[AT]
-		if J not in C and N not in C and AE not in C:C={}
-		if C:
-			for I in C:
-				if I==AE:
-					with E(AS,'a')as G:G.write(e({I:Aw}));G.write(U)
+				D=D[K]
+				if J not in D and N not in D and AK not in D:D={}
+		elif Ae in D:D=D[Ae]
+		if J not in D and N not in D and AK not in D:D={}
+		if D:
+			for I in D:
+				if I==AK:
+					with B(Ad,'a')as G:G.write(e({I:B5}));G.write(U)
 				else:
-					for M in C[I]:
-						with E(AS,'a')as G:G.write(e({I:{M:Aw}}));G.write(U)
+					for M in D[I]:
+						with B(Ad,'a')as G:G.write(e({I:{M:B5}}));G.write(U)
 			L.collect()
-		A.create_task(AB(unit_state=C))
-	except s as O:
-		if D or B:F(O)
+		A.create_task(AG(unit_state=D))
+	except t as O:
+		if E or C:F(O)
 		pass
-async def CG(client):global Bd;await client.subscribe(Bd,1)
-async def CH(client,anon_hash=Aw):
-	h='Collected anonymized data';c='anon_hash';a='Sent state to MQTT broker';Z='last_mqtt_update';X=anon_hash;U=client;global AC,Ai;d=0;Q=0;G={K:{P:await Y()}};G=e(G);await U.publish(AC,G,qos=1);await R()
-	if D or B:F(a)
-	with E(Z,O)as S:S.write(I(p()))
-	G=i(G)
-	if N in G[K][P]or J in G[K][P]or Au in G[K][P]:
-		if X:
-			M=await B5(G);M.update({c:X});M=e(M);await U.publish(Ai,M,qos=1);await R();del M
-			if D or B:F(h)
+async def CS(client):global Bp;await client.subscribe(Bp,1)
+async def CT(client,anon_hash=B5):
+	i='Collected anonymized data';c='anon_hash';b='Sent state to MQTT broker';a='last_mqtt_update';Y=anon_hash;U=client;global AH,At;f=0;R=0;G={K:{Q:await Z()}};G=e(G);await U.publish(AH,G,qos=1);await S()
+	if E or C:F(b)
+	with B(a,O)as T:T.write(I(q()))
+	G=d(G)
+	if N in G[K][Q]or J in G[K][Q]or B3 in G[K][Q]:
+		if Y:
+			M=await BF(G);M.update({c:Y});M=e(M);await U.publish(At,M,qos=1);await S();del M
+			if E or C:F(i)
 			L.collect()
-	del G;L.collect();G={K:{P:await Y()}};G=e(G);await U.publish(AC,G,qos=1);await R()
-	if D or B:F(a)
-	with E(Z,O)as S:S.write(I(p()))
-	del G;V=await AJ()
+	del G;L.collect();G={K:{Q:await Z()}};G=e(G);await U.publish(AH,G,qos=1);await S()
+	if E or C:F(b)
+	with B(a,O)as T:T.write(I(q()))
+	del G;V=await AQ()
 	while H:
-		W=await AJ()
-		if V!=W:
-			f=C5(V,W);Q+=1
-			if V[J][n]<=1200:
-				if Q<=6:G={K:{P:await Y(f)}}
-				else:Q=0;G={K:{P:await Y(W)}}
-			elif Q<=4:G={K:{P:await Y(f)}}
-			else:Q=0;G={K:{P:await Y(W)}}
-			V=W;del W;L.collect();G=e(G);await U.publish(AC,G,qos=1);await R()
-			if D or B:F('Sent new state to MQTT broker')
-			with E(Z,O)as S:S.write(I(p()))
+		X=await AQ()
+		if V!=X:
+			g=CG(V,X);R+=1
+			if V[J][o]<=1200:
+				if R<=6:G={K:{Q:await Z(g)}}
+				else:R=0;G={K:{Q:await Z(X)}}
+			elif R<=4:G={K:{Q:await Z(g)}}
+			else:R=0;G={K:{Q:await Z(X)}}
+			V=X;del X;L.collect();G=e(G);await U.publish(AH,G,qos=1);await S()
+			if E or C:F('Sent new state to MQTT broker')
+			with B(a,O)as T:T.write(I(q()))
 			try:
-				with E(AS,T)as j:
-					for g in j:
-						k=e({K:{AT:i(g)}});await U.publish(AC,k,qos=1)
-						if D or B:F('Deleted desired values from MQTT broker: '+g)
+				with B(Ad,P)as j:
+					for h in j:
+						k=e({K:{Ae:d(h)}});await U.publish(AH,k,qos=1)
+						if E or C:F('Deleted desired values from MQTT broker: '+h)
 						await A.sleep(1)
-				try:b.remove(AS)
+				try:W.remove(Ad)
 				except:pass
 			except:pass
-			G=i(G)
-			if N in G[K][P]or J in G[K][P]or Au in G[K][P]:
-				if X:M=await B5(G);M.update({c:X});M=e(M);await U.publish(Ai,M,qos=1);await R();del M;L.collect()
+			G=d(G)
+			if N in G[K][Q]or J in G[K][Q]or B3 in G[K][Q]:
+				if Y:M=await BF(G);M.update({c:Y});M=e(M);await U.publish(At,M,qos=1);await S();del M;L.collect()
 			del G;L.collect()
-		with E(Z)as S:l=C(S.read())
-		if p()-l>900:
-			del W;L.collect()
-			if V[J][n]<=1200:
-				if Q<=6:G={K:{P:await Y({})}}
-				else:Q=0;G={K:{P:await Y(V)}}
-			elif Q<=3:G={K:{P:await Y({})}}
-			else:Q=0;G={K:{P:await Y(V)}}
-			G=e(G);await U.publish(AC,G,qos=1);await R()
-			if D or B:F(a)
-			with E(Z,O)as S:S.write(I(p()))
-			if X:
-				M=await B5(i(G));M.update({c:X});M=e(M);await U.publish(Ai,M,qos=1);await R();del M;L.collect()
-				if D or B:F(h)
+		with B(a)as T:l=D(T.read())
+		if q()-l>900:
+			del X;L.collect()
+			if V[J][o]<=1200:
+				if R<=6:G={K:{Q:await Z({})}}
+				else:R=0;G={K:{Q:await Z(V)}}
+			elif R<=3:G={K:{Q:await Z({})}}
+			else:R=0;G={K:{Q:await Z(V)}}
+			G=e(G);await U.publish(AH,G,qos=1);await S()
+			if E or C:F(b)
+			with B(a,O)as T:T.write(I(q()))
+			if Y:
+				M=await BF(d(G));M.update({c:Y});M=e(M);await U.publish(At,M,qos=1);await S();del M;L.collect()
+				if E or C:F(i)
 			del G;L.collect()
-		if d<2160:d+=1
-		else:raise s
+		if f<2160:f+=1
+		else:raise t
 		await A.sleep(5)
-async def Be(anon_hash=Aw):
-	global Aj
+async def Bq(anon_hash=B5):
+	global Au
 	while H:
-		try:await A.wait_for(Aj.connect(),50);await CH(Aj,anon_hash)
-		except s as C:
-			await Aa()
-			if D or B:F(C)
-			try:Aj.close()
+		try:await A.wait_for(Au.connect(),50);await CT(Au,anon_hash)
+		except t as B:
+			await Al()
+			if E or C:F(B)
+			try:Au.close()
 			except:pass
-			if D or B:F('MQTT connection closed, reconnecting...')
+			if E or C:F('MQTT connection closed, reconnecting...')
 			await A.sleep(10)
 		L.collect()
 g.feed()
-B9=M
-B6=M
+BK=M
+BG=M
 try:
-	with E(BJ,T)as Bf:BA=Bf.readline().strip();BB=Bf.readline().strip()
-	B9=H
-	if D or B:F('WiFi file available')
-	BX(BA,BB)
-	if D or B:F('WiFi connected')
-	CI=HttpClient();CJ=Q.WLAN(Q.STA_IF);Ak=CJ.ifconfig()[0]
+	with B(BU,P)as Br:BL=Br.readline().strip();BM=Br.readline().strip()
+	BK=H
+	if E or C:F('WiFi file available')
+	Bi(BL,BM)
+	if E or C:F('WiFi connected')
+	BN=B7()
 	try:
-		with E(Bu)as BC:CK=BC.read()
-		if Ak!=CK:raise s
-		with E(AW):0
-		with E(AX):0
+		with B(AN)as BO:AI=d(BO.read());W.remove(AN)
+		A7=BN.post(B0,json={BV:AI})
+	except:pass
+	try:
+		with B(BW,P)as CU:Bs=CU.read()
+		if E or C:F('Customer id_token found, requesting certificates')
+		g.feed()
+		try:
+			with B(AC,P)as A8:l=d(A8.read())
+			AI={w:l[w],AM:l[AM]}
+		except:
+			try:
+				with B(AN)as BO:AI=d(BO.read())
+				W.remove(AN)
+			except:AI=M
+		if AI:AU={'token':Bs,C5:h,Ac:b,AN:AI}
+		else:AU={'token':Bs,C5:h,Ac:b}
+		A7=BN.post(B0,json=AU)
+		if A7:
+			l=A7.json()
+			if E or C:F('Got user certificates')
+			with B(AC,O)as A8:A8.write(e(l))
+			W.remove(BW)
+	except:pass
+	CV=R.WLAN(R.STA_IF);Av=CV.ifconfig()[0]
+	try:
+		with B(C6)as BP:CW=BP.read()
+		if Av!=CW:raise t
+		with B(Ah):0
+		with B(Ai):0
 	except:
 		try:
 			try:
-				if t:Bg={'ip':Ak,BK:d,Bj:t}
-				else:raise s
-			except:Bg={'ip':Ak,BK:d}
-			BD=CI.post('https://httpscert.amastech.cloud/',json=Bg)
-			if BD:
-				if D or B:F('Got API certificates')
-				Al=BD.json()
-				if D or B:F(Al)
-				with E(AW,Av)as CL:CL.write(AA(Al[BN]))
-				with E(AX,Av)as CM:CM.write(AA(Al[BO]))
-				with E(Bu,O)as BC:BC.write(Ak)
-				del Al,BD;L.collect()
-				if D or B:F('Saved API certificates')
+				if u:AU={'ip':Av,Ac:b,Bv:u}
+				else:raise t
+			except:AU={'ip':Av,Ac:b}
+			A7=BN.post('https://httpscert.amastech.cloud/',json=AU)
+			if A7:
+				if E or C:F('Got API certificates')
+				Aw=A7.json()
+				if E or C:F(Aw)
+				with B(Ah,B4)as CX:CX.write(AE(Aw[BY]))
+				with B(Ai,B4)as CY:CY.write(AE(Aw[BZ]))
+				with B(C6,O)as BP:BP.write(Av)
+				del Aw,A7;L.collect()
+				if E or C:F('Saved API certificates')
 		except:
-			try:b.remove(AW)
+			try:W.remove(Ah)
 			except:pass
-			try:b.remove(AX)
+			try:W.remove(Ai)
 			except:pass
 	try:
-		with E(At,T)as BE:A5=i(BE.read())
-		if D or B:F('Using saved device certificates')
-		AD=A5[BL]
-		if D or B:F(Bv+AD)
-		CN=AA(A5[BN]);CO=AA(A5[BO]);del A5;A2=0;A3=0;Bd=Bw+AD+Bx+k+'/update/delta';AC=Bw+AD+Bx+k+Bs;Ai='$aws/rules/anonymized_data_collection/device/'+k+'/data';r['server']='iotcore.amastech.cloud';r['port']=8883;r['client_id']=k.encode();r['ssid']=BA;r['wifi_pw']=BB;r['ssl']=H;r['ssl_params']={'cert':CN,'key':CO};r['subs_cb']=CF;r['connect_coro']=CG;BS.DEBUG=B or D;Aj=BS(r);A.create_task(AB());L.collect();g.feed()
-		if D or B:F(Ax)
-		A.create_task(Bb());A.create_task(Ag());A.create_task(Bc());A.create_task(Ab());A.create_task(Ac());A.create_task(Ae());A.create_task(Ad());A.create_task(Af());g.feed()
+		with B(AC,P)as A8:l=d(A8.read())
+		if E or C:F('Using saved device certificates')
+		AJ=l[w]
+		if E or C:F(C7+AJ)
+		CZ=AE(l[BY]);Ca=AE(l[BZ]);del l;A4=0;A5=0;Bp=C8+AJ+C9+h+'/update/delta';AH=C8+AJ+C9+h+C3;At='$aws/rules/anonymized_data_collection/device/'+h+'/data';s['server']='iotcore.amastech.cloud';s['port']=8883;s['client_id']=h.encode();s['ssid']=BL;s['wifi_pw']=BM;s['ssl']=H;s['ssl_params']={'cert':CZ,'key':Ca};s['subs_cb']=CR;s['connect_coro']=CS;Bd.DEBUG=C or E;Au=Bd(s);A.create_task(AG());L.collect();g.feed()
+		if E or C:F(B6)
+		A.create_task(Bm());A.create_task(Ar());A.create_task(Bn());A.create_task(Am());A.create_task(An());A.create_task(Ap());A.create_task(Ao());A.create_task(Aq());g.feed()
 		try:
-			with E(As)as Cb:
-				if D or B:F('No telemtry selected')
-			A.create_task(Be())
+			with B(A_)as Cn:
+				if E or C:F('No telemtry selected')
+			A.create_task(Bq())
 		except:
-			if D or B:F('Anonymous telemetry selected')
-			with E(m)as AL:W=AL.read()
-			BF=C1.sha256((AD+k+W).encode());BF=hexlify(BF.digest())
-			if D or B:F('Got hash, continuing with services')
-			A.create_task(Be(BF))
-		g.feed();A.run(Ah())
+			if E or C:F('Anonymous telemetry selected')
+			with B(n)as AT:X=AT.read()
+			BQ=CE.sha256((AJ+h+X).encode());BQ=hexlify(BQ.digest())
+			if E or C:F('Got hash, continuing with services')
+			A.create_task(Bq(BQ))
+		g.feed();A.run(As())
 	except:
-		A2=0;A3=1;L.collect();A.create_task(AB())
-		if D or B:F(Ax)
-		g.feed();A.create_task(Bb());A.create_task(Ag());A.create_task(Bc());A.create_task(Ab());A.create_task(Ac());A.create_task(C9());A.create_task(Ae());A.create_task(Ad());A.create_task(Af());g.feed();A.run(Ah())
+		A4=0;A5=1;L.collect();A.create_task(AG())
+		if E or C:F(B6)
+		g.feed();A.create_task(Bm());A.create_task(Ar());A.create_task(Bn());A.create_task(Am());A.create_task(An());A.create_task(CK());A.create_task(Ap());A.create_task(Ao());A.create_task(Aq());g.feed();A.run(As())
 except:
-	B6=H
+	BG=H
 	try:
-		with E(At,T)as BE:A5=i(BE.read())
-		AD=A5[BL]
-		if D or B:F(Bv+AD)
-		del A5;A2=1;A3=0;B3();A.create_task(AB())
-		if D or B:F(Ax)
+		with B(AC,P)as A8:l=d(A8.read())
+		AJ=l[w]
+		if E or C:F(C7+AJ)
+		del l;A4=1;A5=0;BE();A.create_task(AG())
+		if E or C:F(B6)
 		g.feed()
-		if B9:
-			if D or B:F(By)
-			A.create_task(Ag())
-		A.create_task(Ab());A.create_task(Ac());A.create_task(C8());A.create_task(Ae());A.create_task(Ad());A.create_task(Af());g.feed();A.run(Ah())
+		if BK:
+			if E or C:F(CA)
+			A.create_task(Ar())
+		A.create_task(Am());A.create_task(An());A.create_task(CJ());A.create_task(Ap());A.create_task(Ao());A.create_task(Aq());g.feed();A.run(As())
 	except:
-		A2=1;A3=1;B3();A.create_task(AB())
-		if D or B:F(Ax)
+		A4=1;A5=1;BE();A.create_task(AG())
+		if E or C:F(B6)
 		g.feed()
-		if B9:
-			if D or B:F(By)
-			A.create_task(Ag())
-		A.create_task(Ab());A.create_task(Ac());A.create_task(C7());A.create_task(Ae());A.create_task(Ad());A.create_task(Af());g.feed();A.run(Ah())
+		if BK:
+			if E or C:F(CA)
+			A.create_task(Ar())
+		A.create_task(Am());A.create_task(An());A.create_task(CI());A.create_task(Ap());A.create_task(Ao());A.create_task(Aq());g.feed();A.run(As())

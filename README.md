@@ -11,8 +11,8 @@ You can download the `.bin` file specific to the development board you're using 
 - For Windows systems, use the [Espressif Flash Download Tool](https://www.espressif.com/en/support/download/other-tools)
 - For Linux/Mac use [Espressif esptool](https://github.com/espressif/esptool) -- [Documentation](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/esptool/flashing-firmware.html)
 - Download Thonny Python IDE, or use any IDE capable of serial communication
-- Upload 1 file (required) to the ESP32 data partition after flashing
-  - `api_key` a text file (without extension) containing the API key to be used with local API (string of 32 random alphanumeric characters)
+- Once the device boots up, you'll see the randomly generated API key on the serial console, you'll need to save this key to communicate with your device
+- If you are developing for any boards other than ESP32 S3 N8R2, you'll need to upload a text file named `platform` (without any extensions) to the data partition of the board containing the name of the supported board.
 
 About this repository
 ---------------------
