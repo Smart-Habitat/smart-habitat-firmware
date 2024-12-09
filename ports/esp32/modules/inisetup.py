@@ -48,7 +48,8 @@ def setup():
         f.write(
             """\
 # This file is executed on every boot (including wake-boot from deepsleep)
-print('Thank you for trying out Smart Habitat!')
+# if and when Smart Habitat firmware is exited
+print('Thank you for trying out Smart Habitat! Please upload the required files to start services!')
 """
         )
     return fs

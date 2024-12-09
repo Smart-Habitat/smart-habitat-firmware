@@ -25,7 +25,7 @@ from binascii import a2b_base64
 
 
 ### Firmware Version ###
-FIRMWARE_VERSION = 'v0.0.3'
+FIRMWARE_VERSION = 'v0.1.0'
 
 
 ### Initialize NVS ###
@@ -47,7 +47,6 @@ else:
 
 
 ### Platform ###
-# Defaults to ESP32_S3_N8R2
 try:
 	with open('platform') as platform_file:
 		platform = platform_file.read().strip()
@@ -58,8 +57,7 @@ except:
 		nvs.get_blob(b'platform', platform)
 		platform = platform.decode().split('\x00')[0]
 	except:
-		platform = 'ESP32_S3_N8R2'
-		custom_device = True
+		sys.exit()
 # Import platform specific Pins
 if 'ESP32_S3_N8R2' in platform:
 	from vars_ESP32_GENERIC_S3 import amb_scl, amb_sda, analog_water_sensor, water_power, hard_reset_button, network_reset_button, pump, light, err_light, dat_light, i2c_r
@@ -425,11 +423,11 @@ async def configurator(unit_state={}, query_state={}):
 				http_client = HttpClient()
 				try:
 					try:
-						resp= http_client.post('https://devicecert.amastech.cloud/', json={'del_cert': {'cust_id': stale_cust_id, 'cert_id': stale_cert_id}})
+						resp= http_client.post('https://devicecert.smarthabitat.in/', json={'del_cert': {'cust_id': stale_cust_id, 'cert_id': stale_cert_id}})
 					except:
 						await asyncio.sleep(1)
 						gc.collect()
-						resp= http_client.post('https://devicecert.amastech.cloud/', json={'del_cert': {'cust_id': stale_cust_id, 'cert_id': stale_cert_id}})
+						resp= http_client.post('https://devicecert.smarthabitat.in/', json={'del_cert': {'cust_id': stale_cust_id, 'cert_id': stale_cert_id}})
 				except:
 					# Save stale cert info for deletion on next setup
 					with open('stale_cert', 'w') as cert_id_file:
@@ -1303,7 +1301,7 @@ async def regenerateApiKey(request):
 # Update WebSocket endpoint
 @app.route('/update')
 @with_websocket
-async def updateStream(request, ws):
+async def updateWS(request, ws):
 	# Authorization
 	global api_key
 	sent_headers = loads(await ws.receive())
@@ -1432,7 +1430,7 @@ async def debugLogging(request):
 
 # Local data polling endpoint
 @app.route('/poll', methods=['GET', 'OPTIONS'])
-async def poll_data(request):
+async def pollData(request):
 	global salt, debug, custom_device
 	
 	# Authorization
@@ -1454,7 +1452,7 @@ async def poll_data(request):
 # Local data WebSocket endpoint
 @app.route('/metrics')
 @with_websocket
-async def eventStreamApi(request, ws):
+async def metricsWS(request, ws):
 	global salt, debug, custom_device
 
 	# Authorization
@@ -1499,7 +1497,7 @@ async def eventStreamApi(request, ws):
 
 # Local connection test endpoint
 @app.route('/local', methods=['GET', 'OPTIONS'])
-async def local_connection(request):
+async def localConnection(request):
 	response = Response(
 			body='OK',
 			status_code=200,
@@ -1511,7 +1509,7 @@ async def local_connection(request):
 
 # Error handlers
 @app.errorhandler(404)
-async def not_found(request):
+async def notFound(request):
 	response = Response(
 		body='No such endpoint!',
 		status_code=404,
@@ -1522,7 +1520,7 @@ async def not_found(request):
 
 # Error handlers
 @app.errorhandler(RuntimeError)
-async def runtime_error(request, exception):
+async def runtimeError(request, exception):
 	if not (debug or custom_device):
 		exception = 'Runtime error! Restarting the device is advisable!'
 	response = Response(
@@ -1789,7 +1787,7 @@ try:
 		with open('stale_cert') as stale_file:
 			stale_cert = loads(stale_file.read())
 			os.remove('stale_cert')
-		resp= http_client.post('https://devicecert.amastech.cloud/', json={'del_cert': stale_cert})
+		resp= http_client.post('https://devicecert.smarthabitat.in/', json={'del_cert': stale_cert})
 	except: pass
 	try:
 		# Check if registering under a user
@@ -1814,7 +1812,7 @@ try:
 			body_payload = {'token': id_token, 'dev_id': device_id, 'serial': serial, 'stale_cert': stale_cert}
 		else:
 			body_payload = {'token': id_token, 'dev_id': device_id, 'serial': serial}
-		resp= http_client.post('https://devicecert.amastech.cloud/', json=body_payload)
+		resp= http_client.post('https://devicecert.smarthabitat.in/', json=body_payload)
 		if resp:
 			cust_info = resp.json()
 			if debug or custom_device: print('Got user certificates')
@@ -1844,7 +1842,7 @@ try:
 					raise Exception
 			except:
 				body_payload = {'ip': new_ip, 'serial': serial}
-			resp= http_client.post('https://httpscert.amastech.cloud/', json=body_payload)
+			resp= http_client.post('https://httpscert.smarthabitat.in/', json=body_payload)
 			if resp:
 				if debug or custom_device: print('Got API certificates')
 				api_https_info = resp.json()
@@ -1881,7 +1879,7 @@ try:
 		topic_sub = '$aws/things/' + cust_id + '/shadow/name/' + device_id + '/update/delta'
 		topic_pub = '$aws/things/' + cust_id + '/shadow/name/' + device_id + '/update'
 		anon_data_topic = '$aws/rules/anonymized_data_collection/device/' + device_id + '/data'
-		config['server'] = 'iotcore.amastech.cloud'
+		config['server'] = 'iotcore.smarthabitat.in'
 		config['port'] = 8883
 		config['client_id'] = device_id.encode()
 		config['ssid'] = ssid
